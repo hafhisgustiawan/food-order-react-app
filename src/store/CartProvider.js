@@ -9,11 +9,49 @@ const initialCart = {
 
 const cartReducer = (state, action) => {
   if (action.type === 'ADD_ITEM') {
-    const updatedItems = state.items.concat(action.item);
     const total = state.totalAmount + action.item.price * action.item.amount;
+
+    const cartItemExistingIndex = state.items.findIndex(
+      (item) => item.id === action.item.id
+    );
+
+    const existingItem = state.items[cartItemExistingIndex * 1];
+
+    let updatedItems = state.items;
+
+    if (existingItem) {
+      const updatedItem = {
+        ...existingItem,
+        amount: existingItem.amount + action.item.amount,
+      };
+      updatedItems[cartItemExistingIndex] = updatedItem;
+      // updatedItems = state.items.concat(action.item);
+    } else {
+      //concat ini mirip push, tapi dia tidak mempengaruhi array ref nya, cek dokumentasi
+      updatedItems = state.items.concat(action.item);
+    }
 
     return { items: updatedItems, totalAmount: total };
   }
+
+  if (action.type === 'REMOVE_ITEM') {
+    const existingcartIntemIndex = state.items.findIndex(
+      (item) => item.id === action.id
+    );
+    const existingItem = state.items[existingcartIntemIndex];
+    const updatedTotalAmount = state.totalAmount - existingItem.price;
+
+    let updatedItems = state.items;
+
+    if (existingItem.amount === 1) {
+      updatedItems = state.items.filter((item) => item.id !== action.id);
+    } else {
+      const updatedItem = { ...existingItem, amount: existingItem.amount - 1 };
+      updatedItems[existingcartIntemIndex] = updatedItem;
+    }
+    return { items: updatedItems, totalAmount: updatedTotalAmount };
+  }
+
   return initialCart; //optional
 };
 
@@ -25,7 +63,7 @@ const CartProvider = (props) => {
   };
 
   const removeItem = (id) => {
-    dispatchCart({ type: 'ADD_ITEM', id });
+    dispatchCart({ type: 'REMOVE_ITEM', id });
   };
 
   const cartContext = {
