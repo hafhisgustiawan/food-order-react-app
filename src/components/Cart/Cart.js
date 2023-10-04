@@ -6,7 +6,7 @@ const Cart = (props) => {
   const cartItems = (
     <ul>
       {[{ id: 'c1', name: 'Sushi', amount: 2, price: 12.99 }].map((el) => {
-        return <li>{el.name}</li>;
+        return <li key={el.id}>{el.name}</li>;
       })}
     </ul>
   );
