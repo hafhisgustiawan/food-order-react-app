@@ -5,6 +5,7 @@ import styles from './Cart.module.css';
 import Modal from '../UI/Modal';
 import CartItem from './CartItem';
 import CartContext from '../../store/cart-context';
+import Checkout from './Checkout';
 
 const Cart = (props) => {
   const ctx = useContext(CartContext);
@@ -44,6 +45,7 @@ const Cart = (props) => {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
+      <Checkout />
       <div className={styles.actions}>
         <button onClick={props.onToggleCart} className={styles['button--alt']}>
           Close

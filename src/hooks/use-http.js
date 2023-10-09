@@ -14,7 +14,9 @@ const useHttp = () => {
         headers: headers ? headers : {},
         body: body ? JSON.stringify(body) : null,
       });
+
       if (!response.ok) throw new Error('Request failed!');
+
       const data = await response.json();
       applyDataFn(data);
     } catch (err) {

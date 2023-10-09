@@ -37,6 +37,10 @@ const AvailableMeals = () => {
   const { loading, error, sendRequest } = useHttp();
 
   useEffect(() => {
+    // di dalam useEffect ini gabisa pake async await secara keseluruhan
+    // solusinya pake fn di dalam fn
+    // contohnya const fn = async()=> {}
+    // lalu panggil fn()
     const applyDataFn = (data) => {
       const loadedData = [];
       for (const key in data) {
